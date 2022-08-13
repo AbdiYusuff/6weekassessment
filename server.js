@@ -14,6 +14,8 @@ app.get('/', function (req, res){
 // file path for the html file:
 // C:\Users\ayusu\Desktop\DevMountain\Assessments\Week6-Assessment\assessment-qa-devops\public\index.html
 
+app.use(express.static('public'))
+
 
 app.get('/api/robots', (req, res) => {
     try {
