@@ -4,6 +4,17 @@ const app = express()
 const {bots, playerRecord} = require('./data')
 const {shuffleArray} = require('./utils')
 
+// include and initialize the rollbar library with your access token
+const Rollbar = require('rollbar')
+const rollbar = new Rollbar({
+  accessToken: '5c7ab7e7b0d04ab6a69e1625cda67cba',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+})
+
+// record a generic message and send it to Rollbar
+rollbar.log('Hello world!')
+
 app.use(express.json())
 
 //endpoint for Heroku to access HTML file
@@ -19,6 +30,7 @@ app.use(express.static('public'))
 
 app.get('/api/robots', (req, res) => {
     try {
+        rollbar.warning('Robots have been sent')
         res.status(200).send(botsArr)
     } catch (error) {
         console.log('ERROR GETTING BOTS', error)
@@ -42,6 +54,7 @@ app.post('/api/duel', (req, res) => {
     try {
         // getting the duos from the front end
         let {compDuo, playerDuo} = req.body
+        rollbar.info("duo selected from teh front end")
 
         // adding up the computer player's total health and attack damage
         let compHealth = compDuo[0].health + compDuo[1].health
@@ -65,6 +78,7 @@ app.post('/api/duel', (req, res) => {
         }
     } catch (error) {
         console.log('ERROR DUELING', error)
+        rollbar.error(error)
         res.sendStatus(400)
     }
 })
@@ -74,6 +88,7 @@ app.get('/api/player', (req, res) => {
         res.status(200).send(playerRecord)
     } catch (error) {
         console.log('ERROR GETTING PLAYER STATS', error)
+        rollbar.error(error)
         res.sendStatus(400)
     }
 })
