@@ -5,9 +5,9 @@ const {bots, playerRecord} = require('./data')
 const {shuffleArray} = require('./utils')
 
 // include and initialize the rollbar library with your access token
-const Rollbar = require('rollbar')
-const rollbar = new Rollbar({
-  accessToken: '5c7ab7e7b0d04ab6a69e1625cda67cba',
+var Rollbar = require('rollbar')
+var rollbar = new Rollbar({
+  accessToken: '271aabbccfb9485383f01bdacaee9b5c',
   captureUncaught: true,
   captureUnhandledRejections: true,
 })
